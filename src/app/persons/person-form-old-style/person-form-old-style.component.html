@@ -1,0 +1,94 @@
+<form class="person-form" novalidate #personForm="ngForm" (ngSubmit)="submitForm(personForm)">
+
+  <!-- NAME -->
+  <div class="form-group row">
+    <label for="name" class="col-sm-3 col-form-label">Name</label>
+    <div class="col-sm-9">
+      <input id="name" class="form-control" placeholder="Name (required)" required minlength="3" name="name"
+        #personName="ngModel" [(ngModel)]="person.name"
+        [ngClass]="{'is-invalid': (personName.touched || personName.dirty) && !personName.valid}">
+      <span class="invalid-feedback" *ngIf="(personName.touched || personName.dirty) && !personName.valid">
+        <span *ngIf="personName.errors?.required">This field is required</span>
+        <span *ngIf="personName.errors?.minlength">Field length should be minimum 3 characters</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- EMAIL -->
+  <div class="form-group row">
+    <label for="email" class="col-sm-3 col-form-label">Email</label>
+    <div class="col-sm-9">
+      <input id="email" type="email" class="form-control" placeholder="Email (required)" required minlength="3"
+        name="email" [(ngModel)]="person.email" #personEmail="ngModel"
+        [ngClass]="{'is-invalid': (personEmail.touched || personEmail.dirty) && !personEmail.valid}">
+      <span class="invalid-feedback" *ngIf="(personEmail.touched || personEmail.dirty) && !personEmail.valid">
+        <span *ngIf="personEmail.errors?.required">This field is required</span>
+        <span *ngIf="personEmail.errors?.minlength">Field length should be minimum 3 characters</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- HAS ADDRESS -->
+  <div class="form-group row">
+    <div class="col-sm-9">
+      <div class="form-check">
+        <input id="hasAdress" type="checkbox" class="form-check-input" name="hasAdress" [(ngModel)]="hasAdress">
+        <label class="form-check-label" for="hasAdress">Has address</label>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="hasAdress">
+    <!-- ADDRESS TYPE -->
+    <div class="form-group row">
+      <legend class="col-sm-3 col-form-label">Address type</legend>
+      <div class="col-sm-9 form-row align-items-center">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="addressRadios" id="addressHome" value="home" checked>
+          <label class="form-check-label" for="addressHome">
+            Home
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="addressRadios" id="addressWork" value="work">
+          <label class="form-check-label" for="addressWork">
+            Work
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="addressRadios" id="addressOther" value="other">
+          <label class="form-check-label" for="addressOther">
+            Other
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- CITY, STATE, ZIP CODE -->
+    <div class="form-group row align-items-center">
+      <label for="addressType" class="col-sm-3 col-form-label">City, State, Zip code</label>
+
+      <div class="col-sm-9 row">
+        <div class="form-group col-md-5">
+          <label for="addressCity">City</label>
+          <input type="text" class="form-control" id="addressCity">
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="addressState">State</label>
+          <select id="addressState" class="form-control">
+            <option selected>Choose...</option>
+            <option>...</option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-3">
+          <label for="addressZip">Zip</label>
+          <input type="text" class="form-control" id="addressZip">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="!personForm.valid">Save</button>
+</form>

@@ -1,0 +1,121 @@
+<form class="person-form" novalidate (ngSubmit)="submitForm()" [formGroup]="personForm">
+
+  <!-- NAME -->
+  <div class="form-group row">
+    <label for="name" class="col-sm-3 col-form-label">Name</label>
+    <div class="col-sm-9">
+      <input id="name" class="form-control" placeholder="name (required)" formControlName="name"
+        [ngClass]="{'is-invalid': formControlInvalid('name')}">
+      <span class="invalid-feedback" *ngIf="formControlInvalid('name')">{{nameErrorMsg}}</span>
+    </div>
+  </div>
+
+  <div formGroupName="emailGroup">
+    <!-- EMAIL -->
+    <div class="form-group row">
+      <label for="email" class="col-sm-3 col-form-label">Email</label>
+      <div class="col-sm-9">
+        <input id="email" type="email" class="form-control" placeholder="Email (required)" formControlName="email"
+          [ngClass]="{'is-invalid': personForm.get('emailGroup').errors || formControlInvalid('emailGroup.email')}">
+        <span class="invalid-feedback" *ngIf="formControlInvalid('emailGroup.email')">{{emailErrorMsg}}</span>
+      </div>
+    </div>
+
+    <!-- EMAIL CONFIRM -->
+    <div class="form-group row">
+      <label for="emailConfirm" class="col-sm-3 col-form-label">Email confirm</label>
+      <div class="col-sm-9">
+        <input id="emailConfirm" type="email" class="form-control" placeholder="Email confirmation (required)"
+          formControlName="emailConfirm"
+          [ngClass]="{'is-invalid': personForm.get('emailGroup').errors || formControlInvalid('emailGroup.emailConfirm')}">
+        <span class="invalid-feedback"
+          *ngIf="!personForm.get('emailGroup').valid || formControlInvalid('emailGroup.emailConfirm')">{{emailConfirmErrorMsg}}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HAS ADDRESS -->
+  <div class="form-group row">
+    <div class="col-sm-9">
+      <div class="form-check">
+        <input id="hasAdress" type="checkbox" class="form-check-input" formControlName="hasAddress">
+        <label class="form-check-label" for="hasAdress">Has address</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-outline-primary" (click)="addAnotherAddress()">Add another address</button>
+  </div>
+
+  <div *ngIf="personForm.get('hasAddress').value">
+    <div formArrayName="addresses" *ngFor="let addressGroup of personForm.get('addresses').controls; let i=index;">
+      <div [formGroupName]="i">
+        <!-- ADDRESS TYPE -->
+        <div class="form-group row">
+          <legend class="col-sm-3 col-form-label">Address type</legend>
+          <div class="col-sm-9 form-row align-items-center">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="addressType" value="home"
+                formControlName="addressType">
+              <label class="form-check-label" for="addressHome">Home</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="addressType" value="work"
+                formControlName="addressType">
+              <label class="form-check-label" for="addressWork">Work</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="addressType" value="other"
+                formControlName="addressType">
+              <label class="form-check-label" for="addressOther">Other</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- CITY, STATE, ZIP CODE -->
+        <div class="form-group row align-items-center">
+          <label for="addressType" class="col-sm-3 col-form-label">City, State, Zip code</label>
+
+          <div class="col-sm-9 row">
+            <div class="form-group col-md-5">
+              <label attr.for="{{'addressCity' + i}}">City</label>
+              <input type="text" class="form-control" id="{{'addressCity' + i}}" name="addressCity" formControlName="addressCity"
+                [ngClass]="{'is-invalid': !addressGroup.valid}">
+              <span class="invalid-feedback"
+                *ngIf="!addressGroup.valid">{{addressCityErrorMsg}}</span>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label attr.for="{{'addressState' + i}}">State</label>
+              <select id="{{'addressState' + i}}" class="form-control">
+                <option selected>Choose...</option>
+                <option>...</option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label attr.for="{{'addressZip' + i}}">Zip</label>
+              <input type="text" class="form-control" id="{{'addressZip' + i}}" name="addressZip" formControlName="addressZip"
+                [ngClass]="{'is-invalid': !addressGroup.valid}">
+              <span class="invalid-feedback"
+                *ngIf="!addressGroup.valid">{{addressZipErrorMsg}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-outline-secondary" (click)="onPopulateBtnClick()">Populate test data</button>
+    <button type="submit" class="btn btn-outline-info" (click)="onDynamicValidatorsBtnClick()">Toggle dynamic
+      validators</button>
+    <button type="submit" class="btn btn-outline-warning" (click)="onCustomValidatorsBtnClick()">Toggle custom
+      validators</button>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary" [disabled]="!personForm.valid">Save</button>
+  </div>
+</form>
