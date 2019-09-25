@@ -1,7 +1,11 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IPerson } from '../models/person';
+import { LoadPersons } from './persons.actions';
+import { Store, select } from '@ngrx/store';
+import { AppState } from '../reducers';
+import * as fromPersons from './persons.reducer';
 
 @Component({
   selector: 'app-persons',
@@ -11,12 +15,15 @@ import { IPerson } from '../models/person';
 })
 export class PersonsComponent implements OnInit {
   persons$: Observable<IPerson[]>;
+  error$: Observable<string>;
 
-  constructor(private route: ActivatedRoute) {
-    this.persons$ = of(this.route.snapshot.data.persons);
+  constructor(private store: Store<AppState>) {
+    this.persons$ = this.store.pipe(select(fromPersons.selectPersonsItems));
+    this.error$ = this.store.pipe(select(fromPersons.selectPersonsError));
   }
 
   ngOnInit() {
+    this.store.dispatch(new LoadPersons());
   }
 
 }

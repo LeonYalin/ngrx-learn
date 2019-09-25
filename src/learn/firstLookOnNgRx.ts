@@ -7,7 +7,23 @@ function installations() {
 }
 
 function generateStorePieces() {
-  log('Now we can use the schem,atics to generate the NgRx pieces. ');
+  log('Now we can use the schem,atics to generate the NgRx pieces.',
+    'First, generate a store: "npx ng g store State --root --module app.module"',
+    'Next, generate a reducer: "npx ng g reducer persons/persons --reducers ../reducers/index.ts --spec false"',
+    'generate an action: "npx ng g action persons/persons"',
+    'generate an effect "npx ng g effect persons/persons -m persons/persons.module --api"',
+    'generate selectors from the store:',
+    `
+      export const selectPersons = createFeatureSelector<AppState, State>(personsFeatureKey);
+      export const selectPersonsItems = createSelector(
+        selectPersons,
+        (state: State) => state.items
+      );
+      export const selectPersonsError = createSelector(
+        selectPersons,
+        (state: State) => state.error
+      );
+    `);
 }
 
 export default function firstLookOnNgRx() {

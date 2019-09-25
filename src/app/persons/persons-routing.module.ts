@@ -8,7 +8,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { PersonsResolver } from './persons.resolver';
 
 const routes: Routes = [
-  { path: '', component: PersonsComponent, resolve: { persons: PersonsResolver } },
+  // { path: '', component: PersonsComponent, resolve: { persons: PersonsResolver } },
+  { path: '', component: PersonsComponent },
   { path: 'persons/:id', component: PersonComponent },
   { path: 'addPerson', component: PersonFormComponent, canDeactivate: [PersonsGuard] },
   { path: 'addPerson-oldStyle', component: PersonFormOldStyleComponent, canActivate: [PersonsGuard] },
