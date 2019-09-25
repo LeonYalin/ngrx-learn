@@ -124,6 +124,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-reactive-forms-learn"
+    }
+  },
+  "defaultProject": "angular-reactive-forms-learn",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
