@@ -1,7 +1,7 @@
 {
-  "name": "angular-reactive-forms-learn",
+  "name": "ngrx-learn",
   "version": "1.0.0",
-  "description": "This package helps in learning the Angular reactive forms",
+  "description": "This package helps in learning the NgRx",
   "author": "Leon Yalin",
   "scripts": {
     "ng": "ng",
