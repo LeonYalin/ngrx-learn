@@ -2,9 +2,19 @@
   <a class="btn btn-primary form-control" routerLink="/addPerson">Add person</a>
   <a class="btn btn-outline-secondary form-control" routerLink="/addPerson-oldStyle">Add person - Old style</a>
 </div>
-<div class="list-group">
-  <a class="list-group-item list-group-item-action" *ngFor="let person of persons$ | async"
-    routerLink="/persons/{{person.id}}">
+
+<div class="list-group" *ngIf="persons$ | async as persons; else loadingOrError">
+  <a class="list-group-item list-group-item-action" *ngFor="let person of persons" routerLink="/persons/{{person.id}}">
     {{person.name}}
   </a>
 </div>
+
+<ng-template #loadingOrError>
+  <div *ngIf="error$ | async as error; else loading">
+    An error occured. Please try again later.<br><br>
+    {{error}}
+  </div>
+  <ng-template #loading>
+    Loading...
+  </ng-template>
+</ng-template>

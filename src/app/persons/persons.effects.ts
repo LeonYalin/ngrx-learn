@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { PersonsService } from './persons.service';
-import { PersonsActionTypes, LoadPersonsSuccess, LoadPersonsFailure } from './persons.actions';
+import { PersonsActionTypes, LoadPersonsSuccess, LoadPersonsFailure, LoadPerson, LoadPersonFailure, LoadPersonSuccess } from './persons.actions';
 import { switchMap, catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { of } from 'rxjs';
 export class PersonsEffects {
 
   @Effect()
-  loadMovies$ = this.actions$.pipe(
+  loadPersons$ = this.actions$.pipe(
     ofType(PersonsActionTypes.LoadPersons),
     switchMap(() => this.personsService.loadPersons()
       .pipe(
@@ -20,6 +20,15 @@ export class PersonsEffects {
       ))
   )
 
-  constructor(private actions$: Actions, private personsService: PersonsService) { }
+  @Effect()
+  loadPerson$ = this.actions$.pipe(
+    ofType<LoadPerson>(PersonsActionTypes.LoadPerson),
+    switchMap((action) => this.personsService.loadPerson(action.payload.id)
+      .pipe(
+        map(person => (new LoadPersonSuccess({ selectedItem: person }))),
+        catchError((e) => of(new LoadPersonFailure({ error: e })))
+      ))
+  )
 
+  constructor(private actions$: Actions, private personsService: PersonsService) { }
 }

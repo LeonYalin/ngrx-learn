@@ -9,7 +9,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
-  // { path: '', redirectTo: 'persons', pathMatch: 'full' },
   { path: 'persons', loadChildren: () => import('./persons/persons.module').then(m => m.PersonsModule) },
 ];
 

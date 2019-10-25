@@ -13,7 +13,7 @@ export class PersonsService {
     return this.http.get<IPerson[]>(`${this.API_URL}/users`);
   }
 
-  loadPerson(id: string): Observable<IPerson> {
+  loadPerson(id: String): Observable<IPerson> {
     return this.http.get<IPerson>(`${this.API_URL}/users/${id}`);
   }
 

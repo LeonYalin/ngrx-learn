@@ -15,11 +15,11 @@ import * as fromPersons from './persons.reducer';
 })
 export class PersonsComponent implements OnInit {
   persons$: Observable<IPerson[]>;
-  error$: Observable<string>;
+  error$: Observable<String>;
 
   constructor(private store: Store<AppState>) {
-    this.persons$ = this.store.pipe(select(fromPersons.selectPersonsItems));
-    this.error$ = this.store.pipe(select(fromPersons.selectPersonsError));
+    this.persons$ = this.store.pipe(select(fromPersons.selectItems));
+    this.error$ = this.store.pipe(select(fromPersons.selectItemsError));
   }
 
   ngOnInit() {

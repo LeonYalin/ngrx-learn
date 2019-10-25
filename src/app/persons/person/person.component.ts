@@ -1,9 +1,12 @@
-import { PersonsService } from '../persons.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IPerson } from '../../models/person';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'src/app/reducers';
+import { LoadPerson } from '../persons.actions';
+import * as fromPersons from '../persons.reducer';
 
 @Component({
   selector: 'app-person',
@@ -12,14 +15,17 @@ import { switchMap } from 'rxjs/operators';
 })
 export class PersonComponent implements OnInit {
   person$: Observable<IPerson>;
+  error$: Observable<String>;
+  private id: String;
 
-  constructor(private personsService: PersonsService, private route: ActivatedRoute) { }
+  constructor(private store: Store<AppState>, private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
-    this.person$ = this.route.paramMap.pipe(
-      switchMap((params: ParamMap) =>
-        this.personsService.loadPerson(params.get('id')))
-    )
+    this.route.paramMap.subscribe(params => this.id = params.get('id'));
+    this.person$ = this.store.pipe(select(fromPersons.selectSelectedItem));
+    this.error$ = this.store.pipe(select(fromPersons.selectItemsError));
+    this.store.dispatch(new LoadPerson({ id: this.id }));
   }
 
 }
