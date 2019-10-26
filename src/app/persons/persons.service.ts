@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IPerson } from '../models/person';
 
@@ -18,6 +18,11 @@ export class PersonsService {
   }
 
   savePerson(person: IPerson) {
-    this.http.post<IPerson>(`${this.API_URL}/users/`, {...person});
+    return this.http.post<IPerson>(`${this.API_URL}/users/`, JSON.stringify(person), {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'my-auth-token'
+      })
+    });
   }
 }

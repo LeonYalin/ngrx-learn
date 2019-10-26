@@ -9,6 +9,9 @@ export enum PersonsActionTypes {
   LoadPerson = '[Person] Load Person',
   LoadPersonSuccess = '[Person] Load Person Success',
   LoadPersonFailure = '[Person] Load Person Failure',
+  SavePerson = '[Person] Save Person',
+  SavePersonSuccess = '[Person] Save Person Success',
+  SavePersonFailure = '[Person] Save Person Failure',
 }
 
 export class LoadPersons implements Action {
@@ -40,7 +43,23 @@ export class LoadPersonFailure implements Action {
   constructor(public payload: { error: HttpErrorResponse }) { }
 }
 
+export class SavePerson implements Action {
+  readonly type = PersonsActionTypes.SavePerson;
+  constructor(public payload: { person: IPerson }) { }
+}
+
+export class SavePersonSuccess implements Action {
+  readonly type = PersonsActionTypes.SavePersonSuccess;
+  constructor(public payload: { person: IPerson }) { }
+}
+
+export class SavePersonFailure implements Action {
+  readonly type = PersonsActionTypes.SavePersonFailure;
+  constructor(public payload: { error: HttpErrorResponse }) { }
+}
+
 export type PersonsActions =
   LoadPersons | LoadPersonsSuccess | LoadPersonsFailure |
-  LoadPerson | LoadPersonSuccess | LoadPersonFailure;
+  LoadPerson | LoadPersonSuccess | LoadPersonFailure |
+  SavePerson | SavePersonSuccess | SavePersonFailure;
 

@@ -1,11 +1,13 @@
 import { CustomValidators } from './../customValidators';
-import { PersonsService } from './../persons.service';
 import { Person } from 'src/app/models/person';
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { AppState } from 'src/app/reducers';
+import { Store } from '@ngrx/store';
+import { SavePerson } from '../persons.actions';
 
 @Component({
   selector: 'app-person-form',
@@ -32,7 +34,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   }
   private destroy$ = new Subject();
 
-  constructor(private personsService: PersonsService, private fb: FormBuilder, private toastr: ToastrService) { }
+  constructor(private store: Store<AppState>, private fb: FormBuilder, private toastr: ToastrService) { }
 
   ngOnInit() {
     /* Using a form group */
@@ -133,7 +135,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
-    this.personsService.savePerson(this.person);
+    this.store.dispatch(new SavePerson({person: this.personForm.value}));
   }
 
   onPopulateBtnClick() {
