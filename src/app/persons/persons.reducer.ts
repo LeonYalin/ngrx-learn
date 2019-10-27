@@ -31,6 +31,10 @@ export function reducer(state = initialState, action: PersonsActions): State {
       return { ...state, selectedItem: action.payload.selectedItem };
     case PersonsActionTypes.LoadPersonFailure:
       return { ...state, error: action.payload.error.message };
+    case PersonsActionTypes.SavePersonSuccess:
+      return { ...state, items: [...state.items, action.payload.person] };
+    case PersonsActionTypes.SavePersonFailure:
+      return { ...state, error: action.payload.error.message };
     default:
       return state;
   }
